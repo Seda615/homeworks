@@ -1,19 +1,14 @@
 class DomElement {
-    constructor(children, attrs) {
+    constructor(children) {
         this.children = children;
-        this.attrs = attrs;
     }
 
     draw(type) {
 
         const children = Array.isArray(this.children) ? this.children : [this.children];
-        const attrs = Object.entries(this.attrs);
 
         const element = document.createElement(type);
 
-        if (attrs.length !== 0) {
-            attrs.map((attr) => element.setAttribute(attr[0], attr[1]))
-        }
         for (let i = 0; i < children.length; i++) {
             if (children[i] instanceof DomElement) {
                 element.appendChild(children[i].draw())
@@ -35,7 +30,20 @@ class DivElement extends DomElement {
     }
 
     draw() {
-        return super.draw(this.type);
+        const attrs = Object.entries(this.attrs);
+        const element = super.draw(this.type);
+
+        if (attrs.length !== 0) {
+            attrs.map((attr) => {
+                if (attr[0] === 'class' || attr[0] === 'id' || attr[0] === 'title' || attr[0] === 'style') {
+                    element.setAttribute(attr[0], attr[1]);
+                } else {
+                    console.warn(`div does not accept ${attr[0]}`);
+                }
+            })
+        }
+
+        return element;
     }
 }
 
@@ -49,7 +57,19 @@ class SpanElement extends DomElement {
     }
 
     draw() {
-        return super.draw(this.type);
+        const attrs = Object.entries(this.attrs);
+        const element = super.draw(this.type);
+
+        if (attrs.length !== 0) {
+            attrs.map((attr) => {
+                if (attr[0] === 'class' || attr[0] === 'id' || attr[0] === 'title' || attr[0] === 'style') {
+                    element.setAttribute(attr[0], attr[1]);
+                } else {
+                    console.warn(`span does not accept ${attr[0]}`);
+                }
+            })
+        }
+        return element;
     }
 }
 
@@ -63,7 +83,19 @@ class UlElement extends DomElement {
     }
 
     draw() {
-        return super.draw(this.type);
+        const attrs = Object.entries(this.attrs);
+        const element = super.draw(this.type);
+
+        if (attrs.length !== 0) {
+            attrs.map((attr) => {
+                if (attr[0] === 'class' || attr[0] === 'id' || attr[0] === 'type' || attr[0] === 'style') {
+                    element.setAttribute(attr[0], attr[1]);
+                } else {
+                    console.warn(`ul does not accept ${attr[0]}`);
+                }
+            })
+        }
+        return element;
     }
 }
 
@@ -77,7 +109,19 @@ class LiElement extends DomElement {
     }
 
     draw() {
-        return super.draw(this.type);
+        const attrs = Object.entries(this.attrs);
+        const element = super.draw(this.type);
+
+        if (attrs.length !== 0) {
+            attrs.map((attr) => {
+                if (attr[0] === 'class' || attr[0] === 'id' || attr[0] === 'style') {
+                    element.setAttribute(attr[0], attr[1]);
+                } else {
+                    console.warn(`li does not accept ${attr[0]}`);
+                }
+            })
+        }
+        return element;
     }
 }
 
@@ -91,7 +135,19 @@ class FormElement extends DomElement {
     }
 
     draw() {
-        return super.draw(this.type);
+        const attrs = Object.entries(this.attrs);
+        const element = super.draw(this.type);
+
+        if (attrs.length !== 0) {
+            attrs.map((attr) => {
+                if (attr[0] === 'class' || attr[0] === 'id' || attr[0] === 'action' || attr[0] === 'target' || attr[0] === 'style') {
+                    element.setAttribute(attr[0], attr[1]);
+                } else {
+                    console.warn(`form does not accept ${attr[0]}`);
+                }
+            })
+        }
+        return element;
     }
 }
 
@@ -105,7 +161,19 @@ class LabelElement extends DomElement {
     }
 
     draw() {
-        return super.draw(this.type);
+        const attrs = Object.entries(this.attrs);
+        const element = super.draw(this.type);
+
+        if (attrs.length !== 0) {
+            attrs.map((attr) => {
+                if (attr[0] === 'class' || attr[0] === 'id' || attr[0] === 'for' || attr[0] === 'style') {
+                    element.setAttribute(attr[0], attr[1]);
+                } else {
+                    console.warn(`label does not accept ${attr[0]}`);
+                }
+            })
+        }
+        return element;
     }
 }
 
@@ -119,7 +187,19 @@ class InputElement extends DomElement {
     }
 
     draw() {
-        return super.draw(this.type);
+        const attrs = Object.entries(this.attrs);
+        const element = super.draw(this.type);
+
+        if (attrs.length !== 0) {
+            attrs.map((attr) => {
+                if (attr[0] === 'class' || attr[0] === 'id' || attr[0] === 'type' || attr[0] === 'value' || attr[0] === 'name' || attr[0] === 'style') {
+                    element.setAttribute(attr[0], attr[1]);
+                } else {
+                    console.warn(`input does not accept ${attr[0]}`);
+                }
+            })
+        }
+        return element;
     }
 }
 
@@ -133,7 +213,15 @@ class BrElement extends DomElement {
     }
 
     draw() {
-        return super.draw(this.type);
+        const attrs = Object.entries(this.attrs);
+        const element = super.draw(this.type);
+
+        if (attrs.length !== 0) {
+            attrs.map((attr) => {
+                console.warn(`br does not accept ${attr[0]}`);
+            })
+        }
+        return element;
     }
 }
 
@@ -174,7 +262,7 @@ function el(type, attrs, children) {
 }
 
 const tree =
-      el("form", {action: '/some_action'}, [
+      el("form", {action: '/some_action', href: "#"}, [
         el("label", {for: 'name'}, "First name:"),
         el("br", {}, null),
         el("input", {type: 'text', id: 'name', name: 'name', value: "My name"}, null),
